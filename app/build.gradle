@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 27
+
+    def Properties properties = new Properties()
+    properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+    defaultConfig {
+        applicationId "com.werureo.mapbox_android_test"
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        buildConfigField "String", "MAPBOX_API_KEY", properties.getProperty("mapbox.api.key", "")
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:5.5.1@aar') {
+        transitive = true
+    }
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.12.0'
+    implementation ('com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.12.0') {
+        transitive = true
+    }
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.4.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
